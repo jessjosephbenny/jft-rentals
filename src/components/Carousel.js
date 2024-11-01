@@ -15,13 +15,13 @@ const Carousel = () => {
     },
     {
       image: './carousel-sales.jpg',
-      text: 'Eqipment Sales',
+      text: 'Equipment Sales',
       subtext: 'Buy top-tier used equipment',
       buttonText: 'Know More',
       navLink: '/buy'
     },
     {
-      image: './carousel-service.avif',
+      image: './carousel-service.jpg',
       text: 'Equipment Service',
       subtext: 'Expert service and repair technicians',
       buttonText: 'Learn More',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ContactUs from './sections/ContactUs';
+import Success from '../components/Success';
 
 const Service = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -7,7 +8,7 @@ const Service = () => {
         <>
             <div className='w-screen h-96 relative'>
                 {/* Full-Screen Image Section */}
-                <img src="./carousel-service.avif" alt="sales" className="w-full h-full object-cover brightness-50" />
+                <img src="./carousel-service.jpg" alt="sales" className="w-full h-full object-cover brightness-50" />
                 <h1 className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold text-center drop-shadow-lg">
                     Reliable Maintenance | Expert Repairs | Affordable Solutions
                 </h1>
@@ -70,9 +71,41 @@ export default Service;
 
 const ContactModal = ({ isOpen, onClose}) => {
 
+    const [isSuccessOpen, setSuccessOpen] = React.useState(false);
+    
     if (!isOpen) return null;
 
+    const submitForm = (e) => {
+
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch("https://formspree.io/f/xeojwlnj", {
+            method: "POST",
+            body: formData, // Directly use FormData
+            headers: {
+                'Accept': 'application/json'
+            },
+        }).then(response => {
+            if (response.ok) {
+                // Optionally handle successful submission
+                setSuccessOpen(true);
+            } else {
+                // Optionally handle errors
+                alert("Oops! There was a problem submitting your form.");
+            }
+        }).catch(error => {
+            alert("An error occurred. Please try again.");
+        })
+
+    }
+
+    const onSuccessModalClose = () => { 
+        setSuccessOpen(false);
+        onClose();
+    }
+
     return (
+        <>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-lg">
                 <div className="flex p-6 bg-yellow-safety justify-between items-center mb-4">
@@ -83,7 +116,7 @@ const ContactModal = ({ isOpen, onClose}) => {
                         </svg>
                     </button>
                 </div>
-                <form className='bg-white rounded' action='https://formspree.io/f/xldrkwvk' method='POST'>
+                <form className='bg-white rounded' action='https://formspree.io/f/xldrkwvk' method='POST' onSubmit={submitForm}>
                     <div className="mb-4 px-6">
                         <input
                             type="text"
@@ -128,5 +161,7 @@ const ContactModal = ({ isOpen, onClose}) => {
                 </form>
             </div>
         </div>
+        { isSuccessOpen && <Success message="Form Submitted Successfully" onClose={onSuccessModalClose} /> }
+        </>
     );
 };

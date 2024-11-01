@@ -1,10 +1,44 @@
 import React from 'react';
+import Success from '../../components/Success';
 
 const QuoteModal = ({ isOpen, onClose, itemName }) => {
 
+    
+    const [isSuccessOpen, setSuccessOpen] = React.useState(false);
+    
     if (!isOpen) return null;
 
+    const submitForm = (e) => {
+
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch("https://formspree.io/f/xldrkwvk", {
+            method: "POST",
+            body: formData, // Directly use FormData
+            headers: {
+                'Accept': 'application/json'
+            },
+        }).then(response => {
+            if (response.ok) {
+                // Optionally handle successful submission
+                setSuccessOpen(true);
+            } else {
+                // Optionally handle errors
+                alert("Oops! There was a problem submitting your form.");
+            }
+        }).catch(error => {
+            alert("An error occurred. Please try again.");
+        })
+
+    }
+
+    const onSuccessModalClose = () => { 
+        setSuccessOpen(false);
+        onClose();
+    }
+
     return (
+        <>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-lg">
                 <div className="flex p-6 bg-yellow-safety justify-between items-center mb-4">
@@ -15,7 +49,7 @@ const QuoteModal = ({ isOpen, onClose, itemName }) => {
                         </svg>
                     </button>
                 </div>
-                <form className='bg-white rounded' action='https://formspree.io/f/xldrkwvk' method='POST'>
+                <form className='bg-white rounded' action='https://formspree.io/f/xldrkwvk' method='POST' onSubmit={submitForm}>
                     <div className="mb-4 px-6">
                         <label className="block text-base font-medium text-gray-700 mb-2">Selected Item</label>
                         <input
@@ -89,6 +123,8 @@ const QuoteModal = ({ isOpen, onClose, itemName }) => {
                 </form>
             </div>
         </div>
+        { isSuccessOpen && <Success message="Quote Request Submitted Successfully" onClose={onSuccessModalClose} /> }
+        </>
     );
 };
 

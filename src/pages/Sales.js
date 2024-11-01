@@ -1,8 +1,36 @@
 import React from 'react';
 import Typography from '../components/Typography';
 import ContactUs from './sections/ContactUs';
+import Success from '../components/Success';
 
 const Sales = () => {
+
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const submitForm = (e) => {
+
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch("https://formspree.io/f/xeojwlnj", {
+            method: "POST",
+            body: formData, // Directly use FormData
+            headers: {
+                'Accept': 'application/json'
+            },
+        }).then(response => {
+            if (response.ok) {
+                // Optionally handle successful submission
+                setIsOpen(true);
+            } else {
+                // Optionally handle errors
+                alert("Oops! There was a problem submitting your form.");
+            }
+        }).catch(error => {
+            alert("An error occurred. Please try again.");
+        })
+
+    }
+
     return (
         <>
             <div className='w-screen h-96 relative'>
@@ -25,21 +53,21 @@ const Sales = () => {
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 gap-10 text-center">
                     {/* New Equipment */}
                     <div className="flex flex-col items-center">
-                        <img src="./new-excavator.png" alt="New Equipment Icon" className="w-16 h-16 mb-4" />
+                        <img src="./new_equipment.jpeg" alt="New Equipment Icon" className="w-24 h-24 mb-4" />
                         <h3 className="text-2xl font-semibold mb-2">New Equipment</h3>
                         <p className="text-gray-600">Discover our range of new construction equipment from leading OEMs, built to handle your toughest projects.</p>
                     </div>
 
                     {/* Used Equipment */}
                     <div className="flex flex-col items-center">
-                        <img src="./old-generator.png" alt="Used Equipment Icon" className="w-16 h-16 mb-4" />
+                        <img src="./used-equipment.png" alt="Used Equipment Icon" className="w-24 h-24 mb-4" />
                         <h3 className="text-2xl font-semibold mb-2">Used Equipment</h3>
                         <p className="text-gray-600">Our selection of well-maintained used equipment offers great value without compromising on quality.</p>
                     </div>
 
                     {/* Attachments */}
                     <div className="flex flex-col items-center lg:col-span-2">
-                        <img src="./attachment-hammer.png" alt="Attachments Icon" className="w-16 h-16 mb-4" />
+                        <img src="./attachment.jpg" alt="Attachments Icon" className="w-24 h-24 mb-4" />
                         <h3 className="text-2xl font-semibold mb-2">Attachments</h3>
                         <p className="text-gray-600">We offer a variety of attachments to enhance the functionality of your equipment for specialized tasks.</p>
                     </div>
@@ -49,7 +77,7 @@ const Sales = () => {
             <div className="w-screen bg-yellow-safety py-10">
                 <div className="container mx-auto">
                     <h2 className="text-3xl font-semibold text-center mb-6">Send Us a Message</h2>
-                    <form action='https://formspree.io/f/xeojwlnj' method='POST' className="max-w-2xl mx-auto p-8">
+                    <form action='https://formspree.io/f/xeojwlnj' method='POST' onSubmit={submitForm} className="max-w-2xl mx-auto p-8">
                         <div className="grid grid-cols-1 gap-6 mb-6">
                             {/* First Name */}
                             <div>
@@ -85,6 +113,7 @@ const Sales = () => {
                     </form>
                 </div>
             </div>
+            { isOpen && <Success  message="Form Submitted Successfully" onClose={() => setIsOpen(false)} /> }
             <ContactUs />
         </>
     )
