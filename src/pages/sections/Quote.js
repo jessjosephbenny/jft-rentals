@@ -91,6 +91,7 @@ const QuoteModal = ({ isOpen, onClose, itemName }) => {
                             required
                         />
                     </div>
+                    <div className='flex flex-row items-center'>
                     <div className="mb-4 px-6">
                         <label className="block text-base font-medium text-gray-700 mb-2">Start Date (Optional)</label>
                         <input
@@ -100,7 +101,7 @@ const QuoteModal = ({ isOpen, onClose, itemName }) => {
                             className="w-full p-3 border  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    <div className="mb-4 px-6">
+                    <div className="mb-4">
                         <label className="block text-base font-medium text-gray-700 mb-2">End Date (optional) </label>
                         <input
                             type="date"
@@ -108,6 +109,7 @@ const QuoteModal = ({ isOpen, onClose, itemName }) => {
                             name="endDate"
                             className="w-full p-3 border  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
                     </div>
                     <div className="mb-4 px-6">
                         <textarea
